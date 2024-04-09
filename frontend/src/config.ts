@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://backend.usmantariq65.workers.dev"
