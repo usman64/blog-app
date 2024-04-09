@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import userRoutes from './routes/user';
 import blogRoutes from './routes/blog';
 import { logger } from 'hono/logger';
+import { cors } from 'hono/cors';
 
 const app = new Hono<{
   Bindings: {
@@ -11,6 +12,7 @@ const app = new Hono<{
 }>().basePath('/api/v1')
 
 app.use(logger());
+app.use(cors())
 
 // User Routes
 app.route('/', userRoutes);

@@ -96,6 +96,35 @@ blogRoutes.put('/:id', async (c) => {
         })
     }
 })
+
+blogRoutes.get('/bulk', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
+
+    try {
+        const posts = await prisma.post.findMany({
+            select: {
+                title: true,
+                content: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+
+        return c.json({
+            posts: posts
+        })
+    } catch(e) {
+        c.status(411)
+        return c.json({
+            message: "Error while fetching blogs"
+        })
+    }
+})
   
 blogRoutes.get('/:id', async (c) => {
     const id = c.req.param("id");
